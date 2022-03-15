@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-      <i class="fa fa-align-justify"></i>Edit Banner
+      <i class="fa fa-align-justify"></i>Edit Event
       <div class="row">
         <div class="col-sm-3">
             <div class="input-group">
@@ -10,10 +10,10 @@
     </div>
 
     <div class="card-body">
-          <form action="/admin/update-product/{{list_product_id.id}}" method="post" enctype="multipart/form-data"> 
+          <form action="/admin/update-event/{{list_event_id.id}}" method="post" enctype="multipart/form-data"> 
             <div class="col-sm-12 form-group">
             <label for="id">Id</label>
-              <input class="form-control" id="id" name="id" type="text" placeholder="{{list_product_id.id}}" readonly >
+              <input class="form-control" id="id" name="id" type="text" placeholder="{{list_event_id.id}}" readonly >
             </div>
            <div class="col-sm-12 form-group">
                     <label for="end_time">Nama</label>
@@ -35,7 +35,7 @@
               
                 <div class="col-sm-12 form-group price_div">
                     <label for="title">Lokasi</label>
-                    <input class="form-control" id="location" name="location"  type="text" >
+                    <input class="form-control" id="location" name="location"  type="text" value="{{list_event_id.location}}" >
                 </div>
                  <div class="col-sm-12 form-group">
                 <label for="image">Gambar</label>

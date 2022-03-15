@@ -38,22 +38,20 @@ class ManagementEventController {
 			let post = {
 				image: fileName,
 				name:req.body.name,
+				location:req.body.location,
                 description:req.body.description,
 				is_active:req.body.is_active,
 				start_time:req.body.start_time
 			}
 			await Event.create(post)
-			res.status(200).send({
-				message: 'Success',
-				data: post
-			});
+			req.flash('msg_info', 'Sukses Tambah Event');
+
+				res.redirect('/admin/listevent')
 		}
 		catch (error) {
 			console.log(error);
-			res.status(400).send({
-				status: "Error",
-				data: error.message
-			})
+			req.flash('msg_error', 'Eror tambah event');
+            res.redirect('/admin/listevent')
 		}
 	}
 
@@ -76,7 +74,7 @@ class ManagementEventController {
 		}
 		try {
 			 res.render('event/edit', {
-				 title: 'List Article Id',
+				 title: 'List Event Id',
 				 list_event_id:listSelected,
 				 manajemen_event_active:'active'
 			 });
