@@ -5,7 +5,8 @@ const {
 const User = Models.users;
 const Event = Models.events;
 const Op = Sequelize.Op;
-
+const path = require('path');
+const fs = require('fs');
 class EventController {
 	static async getDetail(req, res) {
 		const {
@@ -212,7 +213,7 @@ class EventController {
 			let post = {
 				image: fileName,
 				name:req.body.name,
-                description:req.body.description,
+                location:req.body.location,
 				is_active:req.body.is_active,
 				start_time:req.body.start_time
 			}
@@ -235,7 +236,7 @@ class EventController {
 	static async update(req, res) {
 		const id = req.params.id;
 	
-		let checkEvent = await Event.findOne({where:{id:id, deleted:0}})
+		let checkEvent = await Event.findOne({where:{id:id, deleted:false}})
 
 		let fileName = req.file != null ? req.file.filename : null;
 
@@ -245,10 +246,10 @@ class EventController {
 
 					fs.unlinkSync(path.join(__dirname, process.env.PATH_EVENT + '/' + checkEvent.image))	
 					
-					await checkEvent.update({
+					await Event.update({
 						image: fileName,
 						name:req.body.name,
-						description:req.body.description,
+						location:req.body.location,
 						is_active:req.body.is_active,
 						start_time:req.body.start_time
 					}, {
@@ -262,7 +263,7 @@ class EventController {
 			}else {
 				await Event.update({					
 					name:req.body.name,
-					description:req.body.description,
+					location:req.body.location,
 					is_active:req.body.is_active,
 					start_time:req.body.start_time
 				}, {
@@ -282,7 +283,7 @@ class EventController {
 				await Event.update({
 					image: fileName,
 					name:req.body.name,
-					description:req.body.description,
+					location:req.body.location,
 					is_active:req.body.is_active,
 					start_time:req.body.start_time
 				}, {
@@ -296,7 +297,7 @@ class EventController {
 			}else {
 				await Event.update({
 					name:req.body.name,
-					description:req.body.description,
+					location:req.body.location,
 					is_active:req.body.is_active,
 					start_time:req.body.start_time
 				}, {

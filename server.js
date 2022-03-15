@@ -34,16 +34,6 @@ app.use(express.static(path.resolve(__dirname, 'public')))
 
 
 /*Conf SWAGGER*/
-const swaggerOptions = {
-    swaggerDefinition: {
-        info: {
-            title: 'Library Company-Profile',
-            version: '1.0.0'
-        }
-    },
-    apis: ['server.js']
-};
-const swaggerDocs = swaggerJSDoc(swaggerOptions);
 app.use('/documentation', swaggerUi.serve, swaggerUi.setup(apiDocumentation))
 
 app.use(bodyParser.json());

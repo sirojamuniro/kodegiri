@@ -4,67 +4,63 @@
         "title": "KODEGIRI",
         "version": "1.0.0"
     },
+    "servers": [
+        {
+          "url": "http://localhost:9778"
+        }
+      ],
+      "components": {
+        "securitySchemes": {
+          "bearerAuth": {
+            "type": "http",           
+            "scheme": "bearer"
+          
+          }
+        }
+      },
+      
     "tags": [
         {
-            "name": "ARTICLE"
-        },
-        {
-            "name": "COMPANY PROFILE"
-        },
-        {
-            "name": "MY TEAM"
+            "name": "EVENT"
         },
         {
             "name": "USER"
-        },
-        {
-            "name": "CATEGORY PRODUCT"
-        },
-        {
-            "name": "PRODUCT"
-        },
-        {
-            "name": "DIVISION"
-        },
-        {
-            "name": "SLIDE SHOW"
-        },
-        {
-            "name": "CAREER"
-        },
-        {
-            "name": "DISCLAIMER"
-        },
-        {
-            "name": "POLICY"
-        }
-        
+        }             
     ],
     "paths": {
-        "/article/input-article":{
+        "/api/v1/event":{
             "post": {
                 "tags":[
-                    "ARTICLE"
+                    "EVENT"
                 ],
-                "summary": "POST data Article",
+                "summary": "POST data EVENT",
                 "consumes": "multipart/form-data",
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                
                 "requestBody": {
                     "content": {
                         "multipart/form-data":{
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "logo":{
+                                    "name":{
                                         "type": "string",
-                                        "format": "binary"
+                                        "format": "string"
                                     },
-                                    "title": {
+                                    "start_time": {
+                                        "type":"date-time"
+                                    },
+                                    "location":{
                                         "type":"string"
                                     },
-                                    "description":{
-                                        "type":"string"
+                                    "is_active":{
+                                        "type":"boolean"
                                     },
-                                    "images":{
+                                    "image":{
                                         "type":"string",
                                         "format":"binary"
                                     }
@@ -83,1344 +79,281 @@
                     }
                 }
                 
-            }
-        },
-
-        "/article/get-article":{
-            "get":{
+            },
+            "get": {
                 "tags":[
-                    "ARTICLE"
+                    "EVENT"
                 ],
-                "summary": "GET all Article",
+                "summary": "GET data EVENT",
+                "parameters": [
+                    {
+                      "name": "start",
+                      "in": "query"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query"
+                    }
+                      
+                ],                
+               
                 "responses": {
-                    "200":{
+                    "200": {
                         "description": "Success"
+                    },
+                    "500": {
+                        "description": "Failed !!"
                     }
                 }
-            }
-        },
-
-        "/article/edit-article":{
-            "put":{
-                "tags":[
-                    "ARTICLE"
-                ],
-                "summary": "PUT Article",
-                "consumes":"multipart/form-data",
-                "requestBody":{
-                    "content":{
-                        "multipart/form-data":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "id_user":{
-                                        "type":"integer"
-                                    },
-                                    "logo":{
-                                        "type":"string",
-                                        "format":"binary"
-                                    },
-                                    "title":{
-                                        "type":"string"
-                                    },
-                                    "description":{
-                                        "type":"string"
-                                    },
-                                    "images":{
-                                        "type":"string",
-                                        "format":"binary"
-                                    }
+                
+            }           
+    },
+    "/api/v1/event/{id}":{
+        "put": {
+            "tags":[
+                "EVENT"
+            ],
+            "summary": "PUT data EVENT",
+            "consumes": "multipart/form-data",
+            "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "type":"integer",
+                  "required":"true"
+                }
+            ],
+            "security": [
+                {
+                  "bearerAuth": []
+                }
+              ],
+            
+            "requestBody": {
+                "content": {
+                    "multipart/form-data":{
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name":{
+                                    "type": "string",
+                                    "format": "string"
+                                },
+                                "start_time": {
+                                    "type":"date-time"
+                                },
+                                "location":{
+                                    "type":"string"
+                                },
+                                "is_active":{
+                                    "type":"boolean"
+                                },
+                                "image":{
+                                    "type":"string",
+                                    "format":"binary"
                                 }
                             }
+        
                         }
                     }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Uploaded"
                 },
-                "responses":{
-                    "200":{
-                        "description":"Updated"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
+                "500": {
+                    "description": "Failed !!"
                 }
             }
+            
         },
-
-        "/article/search-article":{
-            "post":{
-                "tags":[
-                    "ARTICLE"
-                ],
-                "summary":"Search Article",
-                "consumes": "application/json",
-                "requestBody":{
+        "delete": {
+            "tags":[
+                "EVENT"
+            ],
+            "summary": "DELETE EVENT",
+            "consumes": "application/json",
+            "produces": ["application/json"],
+            "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "type":"integer",
+                  "required":"true"
+                }
+            ],
+            "security": [
+                {
+                  "bearerAuth": []
+                }
+              ],
+              "requestBody": {
                 "content": {
-                    "application/json": {
+                    "application/json":{
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type":"integer"
+                                }
+                            }
+        
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Success"
+                },
+                "500": {
+                    "description": "Failed !!"
+                }
+            }
+        }
+},
+"/api/v1/event/search":{
+    "post":{
+        "tags":[
+            "EVENT"
+        ],
+        "summary": "SEARCH EVENT WHERE NAME OR LOCATION",
+        "parameters": [
+            {
+              "name": "start",
+              "in": "query"
+            },
+            {
+                "name": "limit",
+                "in": "query"
+            }
+              
+        ],          
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "requestBody": {
+            "content": {
+                "application/json":{
                     "schema": {
                         "type": "object",
                         "properties": {
-                        "title": {
-                            "type":"string"
-                        }
-                        }
-                    }
-                    }
-                }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Article Sophismata"
-                    },
-                    "404":{
-                        "description":"Article Not Found !!"
-                    }
-                }
-
-            }
-        },
-
-        "/article/delete-article":{
-            "delete":{
-                "tags":[
-                    "ARTICLE"
-                ],
-                "summary": "DELETE Article",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id":{
-                                        "type":"integer"
-                                    }
-                                }
+                            "search": {
+                                "type":"string",
+                                "description": "search by name or location"
+                            },
+                            "sort": {
+                                "type":"string",                                
+                                "description": "sorting by ASC OR DESC"
+                            },
+                            "indicator": {
+                                "type":"string",
+                                "description": "indicator for sorting column name,location,start_time,created_at"
                             }
                         }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Deleted"
-                    },
-                    "500":{
-                        "description":"Failed !!"
+    
                     }
                 }
             }
         },
-        "/article/getArticleById/{id_article}":{
-            "get":{
-                "tags": [
-                    "ARTICLE"
-                ],
-                "summary": "Get Article By Id Article",
-                "parameters":[
-                {
-                    "in": "path",
-                    "name": "id_article",
-                    "schema":{
-                        "type":"integer"
+        "responses": {
+            "200": {
+                "description": "Success"
+            },
+            "500": {
+                "description": "Failed !!"
+            }
+        }
+    }
+},
+
+            
+    "/api/v1/auth/login":{
+        "post":{
+            "tags":[
+                "USER"
+            ],
+            "summary": "Login",
+            "consumes": ["application/json"],
+            "produces": ["application/json"],
+            "requestBody": {
+                "content": {
+                    "application/json":{
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type":"string"
+                                },
+                                "password": {
+                                    "type":"string"
+                                }
+                            }
+        
+                        }
                     }
                 }
-            ],
+            },
             "responses": {
                 "200": {
-                "description": "success"
+                    "description": "Success"
                 },
-                "404": {
-                    "description": "not found"
-                }
-            }
-            }
-        },
-
-        "/company/input-company-profile":{
-            "post":{
-                "tags":[
-                    "COMPANY PROFILE"
-                ],
-                "summary": "POST data Company Profile",
-                "consumes": "application/json",
-                "requestBody": {
-                    "content": {
-                        "application/json":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "contentCompany": {
-                                        "type":"string"
-                                    },
-                                    "vision":{
-                                        "type": "string"
-                                    },
-                                    "mission": {
-                                        "type":"string"
-                                    },
-                                    "history":{
-                                        "type":"string"
-                                    }
-                                }
-            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Uploaded"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/company/get-company-profile":{
-            "get":{
-                "tags":[
-                    "COMPANY PROFILE"
-                ],
-                "summary": "GET Company Profile",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-
-        "/company/edit-company-profile":{
-            "put":{
-                "tags":[
-                    "COMPANY PROFILE"
-                ],
-                "summary": "PUT Company Profile",
-                "consumes":"application/json",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "contentCompany": {
-                                        "type":"string"
-                                    },
-                                    "vision":{
-                                        "type": "string"
-                                    },
-                                    "mission": {
-                                        "type":"string"
-                                    },
-                                    "history":{
-                                        "type":"string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Updated"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-             }
-         },
-
-         "/team/input-team":{
-            "post":{
-                "tags":[
-                    "MY TEAM"
-                ],
-                "summary": "POST My Team",
-                "consumes": "multipart/form-data",
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type":"string"
-                                    },
-                                    "position":{
-                                        "type":"string"
-                                    },
-                                    "images":{
-                                        "type":"string",
-                                        "format":"binary"
-                                    }
-                                }
-            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Uploaded"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/team/get-team":{
-            "get":{
-                "tags":[
-                    "MY TEAM"
-                ],
-                "summary": "GET My Team",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-
-        "/team/edit-team":{
-            "put":{
-                "tags":[
-                    "MY TEAM"
-                ],
-                "summary": "PUT My Team",
-                "consumes":"multipart/form-data",
-                "requestBody":{
-                    "content":{
-                        "multipart/form-data":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "name": {
-                                        "type":"string"
-                                    },
-                                    "position":{
-                                        "type": "string"
-                                    },
-                                    "images":{
-                                        "type":"string",
-                                        "format":"binary"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Updated"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-             }
-         },
-
-         "/team/delete-team":{
-            "delete":{
-                "tags":[
-                    "MY TEAM"
-                ],
-                "summary": "DELETE Team",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id":{
-                                        "type":"integer"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Deleted"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/category-product/input-category-product":{
-            "post":{
-                "tags":[
-                    "CATEGORY PRODUCT"
-                ],
-                "summary": "POST Category Product",
-                "consumes": "application/json",
-                "requestBody": {
-                    "content": {
-                        "application/json":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type":"string"
-                                    }
-                                }
-            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Uploaded"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/category-product/get-category-product":{
-            "get":{
-                "tags":[
-                    "CATEGORY PRODUCT"
-                ],
-                "summary": "GET Category Product",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-
-        "/category-product/edit-category-product":{
-            "put":{
-                "tags":[
-                    "CATEGORY PRODUCT"
-                ],
-                "summary": "PUT Category Product",
-                "consumes":"application/json",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "name": {
-                                        "type":"string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Updated"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-             }
-         },
-
-          "/division/input-division":{
-            "post":{
-                "tags":[
-                    "DIVISION"
-                ],
-                "summary": "POST Division",
-                "consumes": "application/json",
-                "requestBody": {
-                    "content": {
-                        "application/json":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type":"string"
-                                    }
-                                }
-            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Uploaded"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/division/get-division":{
-            "get":{
-                "tags":[
-                    "DIVISION"
-                ],
-                "summary": "GET Division",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-
-        "/division/edit-division":{
-            "put":{
-                "tags":[
-                    "DIVISION"
-                ],
-                "summary": "PUT Division",
-                "consumes":"application/json",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "name": {
-                                        "type":"string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Updated"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-             }
-         },
-
-         "/career/input-career":{
-            "post":{
-                "tags":[
-                    "CAREER"
-                ],
-                "summary": "POST Career",
-                "consumes": "application/json",
-                "requestBody": {
-                    "content": {
-                        "application/json":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "id_division": {
-                                        "type":"integer"
-                                    },
-                                    "qualification": {
-                                        "type":"string"
-                                    },
-                                    "ability": {
-                                        "type":"string"
-                                    }
-                                }
-            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Uploaded"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/career/get-career":{
-            "get":{
-                "tags":[
-                    "CAREER"
-                ],
-                "summary": "GET Career",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-
-        "/career/edit-career":{
-            "put":{
-                "tags":[
-                    "CAREER"
-                ],
-                "summary": "PUT Career",
-                "consumes":"application/json",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "id_division": {
-                                        "type":"integer"
-                                    },
-                                    "qualification":{
-                                        "type":"string"
-                                    },
-                                    "ability":{
-                                        "type":"string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Updated"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-             }
-         },
-
-         "/career/delete-career":{
-            "delete":{
-                "tags":[
-                    "CAREER"
-                ],
-                "summary": "DELETE Career",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id":{
-                                        "type":"integer"
-                                    },
-                                    "id_division": {
-                                        "type":"integer"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Deleted"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/auth/registrations":{
-            "post":{
-                "tags":[
-                    "USER"
-                ],
-                "summary": "Registration",
-                "consumes": "application/json",
-                "requestBody": {
-                    "content": {
-                        "application/json":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type":"string"
-                                    },
-                                    "username": {
-                                        "type":"string"
-                                    },
-                                    "password": {
-                                        "type":"string"
-                                    },
-                                    "role_id":{
-                                        "type":"integer"
-                                    }
-                                }
-            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/auth/login":{
-            "post":{
-                "tags":[
-                    "USER"
-                ],
-                "summary": "Login",
-                "consumes": "application/json",
-                "requestBody": {
-                    "content": {
-                        "application/json":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type":"string"
-                                    },
-                                    "password": {
-                                        "type":"string"
-                                    }
-                                }
-            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/product/input-product":{
-            "post":{
-                "tags":[
-                    "PRODUCT"
-                ],
-                "summary": "POST Product",
-                "consumes": "multipart/form-data",
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "title":{
-                                        "type":"string"
-                                    },
-                                    "description":{
-                                        "type":"string"
-                                    },
-                                    "id_category":{
-                                        "type":"integer"
-                                    },
-                                    "url":{
-                                        "type":"string"
-                                    },
-                                    "images":{
-                                        "type":"string",
-                                        "format":"binary"
-                                    },
-                                    "logo":{
-                                        "type":"string",
-                                        "format":"binary"
-                                    }
-                                }
-            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Uploaded"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/product/get-product":{
-            "get":{
-                "tags":[
-                    "PRODUCT"
-                ],
-                "summary": "GET Product",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    },
-                    "404":{
-                        "description":"Not Found"
-                    }
-                }
-            }
-        },
-
-        "/product/get-product-by-id-category/{id}":{
-            "get":{
-                "tags":[
-                    "PRODUCT"
-                ],
-                "summary": "GET Product",
-                "parameters":[
-                    {
-                        "in": "path",
-                        "name": "id",
-                        "schema":{
-                            "type":"integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    },
-                    "404":{
-                        "description": "Not Found"
-                    }
-                }
-            }
-        },
-
-        "/product/edit-product":{
-            "put":{
-                "tags":[
-                    "PRODUCT"
-                ],
-                "summary": "PUT Product",
-                "consumes":"multipart/form-data",
-                "requestBody":{
-                    "content":{
-                        "multipart/form-data":{
-                            "schema":{
-                                "type":"object",
-                                "properties": {
-                                    "id":{
-                                        "type":"integer"
-                                    },
-                                    "logo":{
-                                        "type":"string",
-                                        "format":"binary"
-                                    },
-                                    "title":{
-                                        "type":"string"
-                                    },
-                                    "description":{
-                                        "type":"string"
-                                    },
-                                    "id_category":{
-                                        "type":"integer"
-                                    },
-                                    "url":{
-                                        "type":"string"
-                                    },
-                                    "images":{
-                                        "type":"string",
-                                        "format":"binary"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Updated"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/product/delete-product":{
-            "delete":{
-                "tags":[
-                    "PRODUCT"
-                ],
-                "summary": "DELETE Product",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id":{
-                                        "type":"integer"
-                                    },
-                                    "id_category":{
-                                        "type":"integer"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Deleted"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    },
-                    "422":{
-                        "description":"Required"
-                    }
-                }
-            }
-        },
-
-        "/disclaimer/get-disclaimer" : {
-            "get":{
-                "tags":[
-                    "DISCLAIMER"
-                ],
-                "summary": "GET all Disclaimer",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-
-        "/disclaimer/input-disclaimer":{
-            "post": {
-                "tags":[
-                    "DISCLAIMER"
-                ],
-                "summary": "POST data Disclaimer",
-                "consumes": "application/json",
-                "requestBody": {
-                    "content": {
-                        "application/json":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type":"integer"
-                                    },
-                                    "title": {
-                                        "type":"string"
-                                    },
-                                    "description":{
-                                        "type":"string"
-                                    }
-                                }            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Uploaded"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-                
-            }
-        },
-        
-        "/disclaimer/edit-disclaimer":{
-            "put":{
-                "tags":[
-                    "DISCLAIMER"
-                ],
-                "summary": "PUT Disclaimer",
-                "consumes":"application/json",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "title": {
-                                        "type":"string"
-                                    },
-                                    "description":{
-                                        "type":"string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Updated"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/disclaimer/delete-disclaimer":{
-            "delete":{
-                "tags":[
-                    "DISCLAIMER"
-                ],
-                "summary": "DELETE Disclaimer",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id":{
-                                        "type":"integer"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Deleted"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/policy/get-policy" : {
-            "get":{
-                "tags":[
-                    "POLICY"
-                ],
-                "summary": "GET all Policy",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-
-        "/policy/input-policy":{
-            "post": {
-                "tags":[
-                    "POLICY"
-                ],
-                "summary": "POST data Policy",
-                "consumes": "application/json",
-                "requestBody": {
-                    "content": {
-                        "application/json":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type":"integer"
-                                    },
-                                    "title": {
-                                        "type":"string"
-                                    },
-                                    "description":{
-                                        "type":"string"
-                                    }
-                                }            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Uploaded"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-                
-            }
-        },
-        
-        "/policy/edit-policy":{
-            "put":{
-                "tags":[
-                    "POLICY"
-                ],
-                "summary": "PUT Policy",
-                "consumes":"application/json",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "title": {
-                                        "type":"string"
-                                    },
-                                    "description":{
-                                        "type":"string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Updated"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/policy/delete-policy":{
-            "delete":{
-                "tags":[
-                    "POLICY"
-                ],
-                "summary": "DELETE Policy",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id":{
-                                        "type":"integer"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Deleted"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/slide/get-slide" : {
-            "get":{
-                "tags":[
-                    "SLIDE SHOW"
-                ],
-                "summary": "GET all Slide Show for user",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        
-        "/slide/get-image-admin" : {
-            "get":{
-                "tags":[
-                    "SLIDE SHOW"
-                ],
-                "summary": "GET all Slide Show for admin",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-
-        "/slide/get-slide-landing-page" : {
-            "get":{
-                "tags":[
-                    "SLIDE SHOW"
-                ],
-                "summary": "GET Slide Show for Landing Page",
-                "responses": {
-                    "200":{
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-
-        "/slide/input-slide":{
-            "post":{
-                "tags":[
-                    "SLIDE SHOW"
-                ],
-                "summary": "POST Slide Show",
-                "consumes": "multipart/form-data",
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data":{
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "images":{
-                                        "type":"string",
-                                        "format":"binary"
-                                    },
-                                    "promo_product":{
-                                        "type":"string"
-                                    },
-                                    "slogan":{
-                                        "type":"string"
-                                    }
-                                }
-            
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Uploaded"
-                    },
-                    "500": {
-                        "description": "Failed !!"
-                    }
-                }
-            }
-        },
-        
-        "/slide/edit-slide":{
-            "put":{
-                "tags":[
-                    "SLIDE SHOW"
-                ],
-                "summary": "PUT Slide Show",
-                "consumes":"multipart/form-data",
-                "requestBody":{
-                    "content":{
-                        "multipart/form-data":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id": {
-                                        "type": "integer"
-                                    },
-                                    "is_actived":{
-                                        "type":"integer"
-                                    },
-                                    "promo_product": {
-                                        "type":"string"
-                                    },
-                                    "slogan":{
-                                        "type":"string"
-                                    },
-                                    "images":{
-                                        "type":"string",
-                                        "format":"binary"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Updated"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
-                }
-            }
-        },
-
-        "/slide/delete-slide":{
-            "delete":{
-                "tags":[
-                    "SLIDE SHOW"
-                ],
-                "summary": "DELETE Slide Show",
-                "requestBody":{
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "id":{
-                                        "type":"integer"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses":{
-                    "200":{
-                        "description":"Deleted"
-                    },
-                    "500":{
-                        "description":"Failed !!"
-                    }
+                "500": {
+                    "description": "Failed !!"
                 }
             }
         }
-
-
-
-
+    },
+    "/api/v1/auth/register":{
+        "post":{
+            "tags":[
+                "USER"
+            ],
+            "summary": "Register",
+            "consumes": ["application/json"],
+            "produces": ["application/json"],
+            "requestBody": {
+                "content": {
+                    "application/json":{
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type":"string"
+                                },
+                                "password": {
+                                    "type":"string"
+                                },
+                                "confirm_password": {
+                                    "type":"string"
+                                },
+                                "gender": {
+                                    "type":"string"
+                                },
+                                "dob": {
+                                    "type":"string"
+                                },
+                                "phone": {
+                                    "type":"string"
+                                },
+                                "name": {
+                                    "type":"string"
+                                }
+                            }
+        
+                        }
+                    }
+                }
+            },
+            "responses": {
+                "200": {
+                    "description": "Success"
+                },
+                "500": {
+                    "description": "Failed !!"
+                }
+            }
+        }
+    }
     }
 }

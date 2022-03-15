@@ -127,7 +127,7 @@ class AuthController {
 
 		let create = {
 			name: req.body.name,
-			title: req.body.title,
+			gender: req.body.gender,
 			dob: req.body.dob,
 			email: req.body.email,
 			phone: req.body.phone,
