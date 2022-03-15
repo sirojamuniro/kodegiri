@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "",
+    "database": "kodegiri",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "staging": {
+    "username": "postgres",
+    "password": "",
+    "database": "kodegiri",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
