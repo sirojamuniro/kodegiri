@@ -1,38 +1,27 @@
-const temp = ['11','12','cii','001','2','1998','7','89','iia','fii']
+const data = ['11','12','cii','001','2','1998','7','89','iia','fii']
 
-
-const foo = (items) => {
-    const onlyString = items.filter((item) => {
+const check = (items) => {
+    const thisString = items.filter((item) => {
         return !parseInt(item) 
     })
     let result = {};
-    let all = [];
-    onlyString.forEach((item) => {
-        const separateString = item.split("")
+    let allData = [];
+    thisString.forEach((item) => {
+        const splitString = item.split("")
         let subString = [];
-        separateString.forEach((subItem, index) => {
-            let temps = item.slice(0,index + 1)
-            subString.push(temps)
-            all.push(temps)
-            let helper = 0;
-            let isLoop = true;
-            while((index === separateString.length - 1) && isLoop) {
-                temps = item.slice(helper, index + 1)
-                subString.push(temps)
-                all.push(temps)
-                subString = [...new Set(subString)] 
-                helper += 1
-                if(helper === index + 1) isLoop = false
-            }
+        splitString.map((index) => {
+            let datas = item.slice(0,index + 1)
+            subString.push(datas)
+            allData.push(datas)
         })
-        all = [...new Set(all)] 
+        allData = [...new Set(allData)] 
         result = {
             ...result,
             [item]: subString,
-            ['S']: all
+            ['S']: allData
         }
     })
     return result
 }
 
-console.log(foo(temp));
+console.log(check(data));
