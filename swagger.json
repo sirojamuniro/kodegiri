@@ -266,6 +266,24 @@
         }
     }
 },
+"/api/v1/event/test":{
+    "post":       {
+        "tags":[
+        "EVENT"
+    ],
+    "summary": "NOMOR 1",
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "responses": {
+        "200": {
+            "description": "Success"
+        },
+        "500": {
+            "description": "Failed !!"
+        }
+    }
+}
+},
 
             
     "/api/v1/auth/login":{

@@ -17,7 +17,7 @@ router.post('/', header.auth,user.checkUser, uploads_event.single('image'), Even
 router.put('/:id', header.auth,user.checkUser, uploads_event.single('image'), EventController.update);
 router.delete('/:id', header.json, header.auth,user.checkUser,validate, EventController.delete);
 router.get('/:id',EventController.getById);
-
+router.post('/test',EventController.getTest);
 //search
 router.post('/search', EventController.searchEvent);
 

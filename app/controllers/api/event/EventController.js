@@ -8,6 +8,50 @@ const Op = Sequelize.Op;
 const path = require('path');
 const fs = require('fs');
 class EventController {
+	
+	static getTest(req, res) {
+	
+		try {
+			const data = ['11','12','cii','001','2','1998','7','89','iia','fii']
+			const check = (items) => {
+				const thisString = items.filter((item) => {
+					return !parseInt(item) 
+				})
+				let result = {};
+				let allData = [];
+				thisString.forEach((item) => {
+					const splitString = item.split("")
+					let subString = [];
+					splitString.forEach((subItem,index) => {
+						let datas = item.slice(0,index + 1)
+						subString.push(datas)
+						allData.push(datas)
+					}) 
+					result = {
+						...result,
+						[item]: subString,
+						['S']: allData
+					}
+				})
+				return result
+			}
+			let thisResult = check(data);
+			res.status(200).send({
+				message: 'Success',
+				data: thisResult,
+			});
+			
+		} catch (error) {
+			console.log(error);
+			res.status(400).send({
+				status: "Error",
+				errors: [{
+					message: error.message
+				}]
+			})
+		}
+	}
+
 	static async getDetail(req, res) {
 		const {
 			start,
