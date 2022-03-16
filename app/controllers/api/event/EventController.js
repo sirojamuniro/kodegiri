@@ -244,7 +244,7 @@ class EventController {
 			if(checkEvent.image != null){
 				if(fileName != null){
 
-					fs.unlinkSync(path.join(__dirname, process.env.PATH_EVENT + '/' + checkEvent.image))	
+					fs.unlinkSync(path.join(__dirname, process.env.PATH_EVENT_CONTROLLER + '/' + checkEvent.image))	
 					
 					await Event.update({
 						image: fileName,
